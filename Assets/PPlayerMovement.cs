@@ -9,7 +9,9 @@ public class PPlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public bool canMove = true;
     public bool isActivePlayer;
-    public float strength = 4f;
+    public float strength = 15f;
+
+    public bool haveMoved;
 
     public HockeyStick stick;
     public GameObject puck;
@@ -55,10 +57,15 @@ public class PPlayerMovement : MonoBehaviour
                 if (isActivePlayer)
                 {
                     Debug.Log("Please work");
-                    stick.gameObject.SetActive(false);
-                    float y = Random.Range(-2, 3);
-                    this.transform.position.Set(this.transform.position.x, y, 0);
-                    Invoke("Shoot", 1f);
+                    if (!haveMoved)
+                    {
+                        haveMoved = true;
+                        stick.gameObject.SetActive(false);
+                        float y = Random.Range(-2, 3);
+                        rb.MovePosition(new Vector3((transform.position.x + y), transform.position.y, 0));
+                        puck.GetComponent<Rigidbody2D>().MovePosition(new Vector3((puck.transform.position.x + y), puck.transform.position.y, 0));
+                        Invoke("Shoot", 1f);
+                    }
                 }
                 else
                 {
@@ -70,7 +77,7 @@ public class PPlayerMovement : MonoBehaviour
 
     public void Shoot()
     {
-        puck.GetComponent<Rigidbody2D>().AddForce(transform.forward * strength);
+        puck.GetComponent<Rigidbody2D>().AddForce(transform.up * strength);
     }
 }
 

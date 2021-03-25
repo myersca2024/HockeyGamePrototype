@@ -127,6 +127,7 @@ public class PLevelManager : MonoBehaviour
 
     public void Restart()
     {
+        player1.haveMoved = false;
         activePlayer = !activePlayer;
         player1.gameObject.transform.position = defaultPlayer1Pos;
         player2.gameObject.transform.position = defaultPlayer2Pos;
