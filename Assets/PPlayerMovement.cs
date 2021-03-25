@@ -17,6 +17,7 @@ public class PPlayerMovement : MonoBehaviour
     public GameObject puck;
 
     Vector2 movement;
+    float move = 1f;
 
     void FixedUpdate()
     {
@@ -56,7 +57,6 @@ public class PPlayerMovement : MonoBehaviour
             {
                 if (isActivePlayer)
                 {
-                    Debug.Log("Please work");
                     if (!haveMoved)
                     {
                         haveMoved = true;
@@ -69,7 +69,18 @@ public class PPlayerMovement : MonoBehaviour
                 }
                 else
                 {
-
+                    Debug.Log("Moving");
+                    if (transform.position.x > 2)
+                    {
+                        Debug.Log("Moving right");
+                        move = -1f;
+                    }
+                    else if (transform.position.x < -2)
+                    {
+                        Debug.Log("Moving left");
+                        move = 1f;
+                    }
+                    rb.MovePosition(transform.position + new Vector3(move, 0, 0) * Time.deltaTime * speed);
                 }
             }
         }
@@ -78,6 +89,12 @@ public class PPlayerMovement : MonoBehaviour
     public void Shoot()
     {
         puck.GetComponent<Rigidbody2D>().AddForce(transform.up * strength);
+        Invoke("CallEnd", 3f);
+    }
+
+    public void CallEnd()
+    {
+        GameObject.FindObjectOfType<PLevelManager>().End();
     }
 }
 
